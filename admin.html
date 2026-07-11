@@ -65,6 +65,10 @@
   <h1>Quản lý sản phẩm & tạo mã QR</h1>
   <p class="sub">Trang này chạy hoàn toàn trên trình duyệt của bạn — dữ liệu tạm lưu ở máy này. Sau khi chỉnh sửa, hãy tải file <strong>products.json</strong> và tải lên GitHub để cập nhật trang tra cứu.</p>
 
+  <div class="msg show warn" style="background:#F5E4D6;color:var(--clay);font-weight:600;">
+    ⚠ Lưu ý quan trọng: sản phẩm bạn thêm ở đây <u>chỉ lưu trên máy này</u>. Trang khách hàng sẽ KHÔNG thấy sản phẩm mới cho đến khi bạn làm xong bước 2 (tải products.json) rồi tải file đó lên GitHub thay cho file cũ.
+  </div>
+
   <div id="msg" class="msg"></div>
 
   <div class="card">
@@ -132,10 +136,21 @@ const STORAGE_KEY = 'qr_products_draft_v1';
 const BASEURL_KEY = 'qr_products_baseurl_v1';
 let state = { cua_hang: { ten: 'Cửa hàng của bạn', dien_thoai: '' }, san_pham: [] };
 
+function detectBaseUrl(){
+  // Suy ra địa chỉ thư mục chứa index.html từ chính URL đang chạy admin.html.
+  // Chỉ hoạt động khi admin.html thật sự được mở qua http/https (không phải mở file trực tiếp).
+  if (location.protocol === 'file:') return '';
+  const path = location.href.replace(/admin\.html.*$/, '');
+  return path;
+}
 function load(){
   const raw = localStorage.getItem(STORAGE_KEY);
   if (raw) { try { state = JSON.parse(raw); } catch(e){} }
-  const base = localStorage.getItem(BASEURL_KEY);
+  let base = localStorage.getItem(BASEURL_KEY);
+  if (!base) {
+    base = detectBaseUrl();
+    if (base) localStorage.setItem(BASEURL_KEY, base);
+  }
   if (base) document.getElementById('baseUrl').value = base;
   render();
 }
@@ -236,7 +251,11 @@ function deleteProduct(i){
 function productUrl(id){
   const base = (localStorage.getItem(BASEURL_KEY) || '').trim();
   const cleanBase = base ? (base.endsWith('/') ? base : base + '/') : './';
-  return cleanBase + (base ? 'index.html' : 'index.html') + '?id=' + encodeURIComponent(id);
+  return cleanBase + 'index.html?id=' + encodeURIComponent(id);
+}
+function baseUrlIsAbsolute(){
+  const base = (localStorage.getItem(BASEURL_KEY) || '').trim();
+  return /^https?:\/\//i.test(base);
 }
 
 function render(){
@@ -263,6 +282,9 @@ function render(){
   tableWrap.innerHTML = rows;
 
   qrGrid.innerHTML = '';
+  if (!baseUrlIsAbsolute()){
+    qrGrid.innerHTML = '<div class="empty" style="grid-column:1/-1;color:var(--clay);">⚠ Chưa có địa chỉ trang web hợp lệ (phải bắt đầu bằng https://) ở mục 1, nên mã QR bên dưới sẽ KHÔNG quét được. Hãy mở admin.html qua địa chỉ GitHub Pages thật (không phải mở file trên máy), hoặc tự nhập link vào mục 1.</div>';
+  }
   state.san_pham.forEach(p => {
     const item = document.createElement('div');
     item.className = 'qr-item';
