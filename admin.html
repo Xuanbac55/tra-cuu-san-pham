@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản lý sản phẩm & tạo mã QR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --paper:#F5F1E6;--paper-2:#EFE9DA;--ink:#2B2A25;--ink-soft:#5B5A50;
+    --pine:#234D35;--pine-2:#3C6B4D;--clay:#B5652D;--line:#D9D2BE;--white:#FFFDF8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter',sans-serif;background:var(--paper);color:var(--ink);padding:28px 16px 80px;}
+  .wrap{max-width:900px;margin:0 auto;}
+  h1{font-family:'Fraunces',serif;font-size:26px;color:var(--pine);margin:0 0 4px;}
+  .sub{color:var(--ink-soft);font-size:14px;margin:0 0 24px;line-height:1.6;}
+  .card{background:var(--white);border:1px solid var(--line);border-radius:5px;padding:22px 24px;margin-bottom:20px;}
+  .card h2{font-size:15px;margin:0 0 14px;color:var(--pine);text-transform:uppercase;letter-spacing:.04em;}
+  label{display:block;font-size:12px;color:var(--ink-soft);margin:12px 0 4px;}
+  label:first-child{margin-top:0;}
+  input,textarea{
+    width:100%;border:1px solid var(--line);background:var(--paper-2);border-radius:3px;
+    padding:10px 12px;font-family:'Inter',sans-serif;font-size:14px;color:var(--ink);outline:none;
+  }
+  input:focus,textarea:focus{border-color:var(--pine-2);}
+  textarea{resize:vertical;min-height:60px;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  button{
+    border:1px solid var(--pine);background:var(--pine);color:var(--white);font-family:'Inter',sans-serif;
+    font-weight:600;font-size:13px;padding:10px 16px;border-radius:3px;cursor:pointer;
+  }
+  button.ghost{background:transparent;color:var(--pine);}
+  button.danger{background:var(--clay);border-color:var(--clay);}
+  button:hover{opacity:.88;}
+  .baseurl{display:flex;gap:10px;align-items:center;margin-bottom:16px;}
+  .baseurl input{font-family:'Space Mono',monospace;font-size:13px;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--paper-2);}
+  th{color:var(--ink-soft);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
+  td.id{font-family:'Space Mono',monospace;}
+  td.actions-col{white-space:nowrap;text-align:right;}
+  td.actions-col button{padding:6px 10px;font-size:12px;margin-left:6px;}
+
+  .qr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;margin-top:16px;}
+  .qr-item{border:1px solid var(--line);border-radius:4px;padding:12px;text-align:center;background:var(--paper-2);}
+  .qr-item .qr-box{background:#fff;padding:8px;display:inline-block;border-radius:3px;}
+  .qr-item .name{font-size:12px;margin-top:8px;font-weight:600;}
+  .qr-item .code{font-family:'Space Mono',monospace;font-size:11px;color:var(--ink-soft);}
+
+  .msg{font-size:13px;padding:10px 14px;border-radius:3px;margin-bottom:16px;display:none;}
+  .msg.show{display:block;}
+  .msg.ok{background:#E4EFE6;color:var(--pine);}
+  .msg.warn{background:#F5E4D6;color:var(--clay);}
+  .hint{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.6;}
+  .empty{color:var(--ink-soft);font-size:13px;padding:20px 0;text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Quản lý sản phẩm & tạo mã QR</h1>
+  <p class="sub">Trang này chạy hoàn toàn trên trình duyệt của bạn — dữ liệu tạm lưu ở máy này. Sau khi chỉnh sửa, hãy tải file <strong>products.json</strong> và tải lên GitHub để cập nhật trang tra cứu.</p>
+
+  <div id="msg" class="msg"></div>
+
+  <div class="card">
+    <h2>1. Địa chỉ trang web của bạn</h2>
+    <p class="hint" style="margin-top:0 0 10px">Nhập đường dẫn trang tra cứu (index.html) sau khi đã đăng lên GitHub Pages. Dùng để tạo link/QR chính xác. Có thể để trống và điền sau.</p>
+    <div class="baseurl">
+      <input id="baseUrl" placeholder="https://ten-cua-ban.github.io/ten-repo/">
+      <button class="ghost" id="saveBaseUrl">Lưu</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2. Nhập / xuất dữ liệu</h2>
+    <div class="actions">
+      <button id="importBtn">Nhập products.json có sẵn</button>
+      <button class="ghost" id="exportBtn">Tải xuống products.json</button>
+      <input type="file" id="fileInput" accept="application/json" style="display:none">
+    </div>
+    <p class="hint">Nhập file products.json hiện tại để tiếp tục chỉnh sửa, hoặc tải xuống file mới để tải lên GitHub.</p>
+  </div>
+
+  <div class="card">
+    <h2>3. Thêm / sửa sản phẩm</h2>
+    <input type="hidden" id="editIndex" value="-1">
+    <label>Mã sản phẩm (không dấu, không khoảng trắng) *</label>
+    <input id="f_id" placeholder="SP004">
+    <label>Tên sản phẩm *</label>
+    <input id="f_ten" placeholder="Tên sản phẩm">
+    <div class="row2">
+      <div><label>Giá bán</label><input id="f_gia" placeholder="150.000đ"></div>
+      <div><label>Trạng thái</label><input id="f_trangthai" placeholder="Chính hãng"></div>
+    </div>
+    <label>Ảnh sản phẩm (đường dẫn URL)</label>
+    <input id="f_anh" placeholder="https://...">
+    <div class="row2">
+      <div><label>Xuất xứ</label><input id="f_xuatxu" placeholder="Việt Nam"></div>
+      <div><label>Thành phần</label><input id="f_thanhphan" placeholder=""></div>
+    </div>
+    <div class="row2">
+      <div><label>Ngày sản xuất</label><input id="f_nsx" placeholder="dd/mm/yyyy"></div>
+      <div><label>Hạn sử dụng</label><input id="f_hsd" placeholder=""></div>
+    </div>
+    <label>Mô tả</label>
+    <textarea id="f_mota" placeholder="Mô tả ngắn về sản phẩm"></textarea>
+    <div class="actions">
+      <button id="saveProduct">Lưu sản phẩm</button>
+      <button class="ghost" id="clearForm">Xóa nội dung nhập</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>4. Danh sách sản phẩm</h2>
+    <div id="tableWrap"><div class="empty">Chưa có sản phẩm nào.</div></div>
+  </div>
+
+  <div class="card">
+    <h2>5. Mã QR để in</h2>
+    <p class="hint" style="margin-top:0 0 10px">Nhấn vào từng ảnh QR để tải xuống, dán lên bao bì hoặc kệ sản phẩm.</p>
+    <div id="qrGrid" class="qr-grid"></div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'qr_products_draft_v1';
+const BASEURL_KEY = 'qr_products_baseurl_v1';
+let state = { cua_hang: { ten: 'Cửa hàng của bạn', dien_thoai: '' }, san_pham: [] };
+
+function load(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) { try { state = JSON.parse(raw); } catch(e){} }
+  const base = localStorage.getItem(BASEURL_KEY);
+  if (base) document.getElementById('baseUrl').value = base;
+  render();
+}
+function persist(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function showMsg(text, type){
+  const m = document.getElementById('msg');
+  m.textContent = text; m.className = 'msg show ' + (type || 'ok');
+  setTimeout(() => m.classList.remove('show'), 3500);
+}
+
+document.getElementById('saveBaseUrl').onclick = () => {
+  localStorage.setItem(BASEURL_KEY, document.getElementById('baseUrl').value.trim());
+  showMsg('Đã lưu địa chỉ trang web.', 'ok');
+  render();
+};
+
+document.getElementById('exportBtn').onclick = () => {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'products.json'; a.click();
+  URL.revokeObjectURL(url);
+};
+
+document.getElementById('importBtn').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!data.san_pham) throw new Error('bad format');
+      state = data;
+      persist(); render();
+      showMsg('Đã nhập dữ liệu thành công.', 'ok');
+    } catch(e){
+      showMsg('File không hợp lệ. Hãy chọn đúng file products.json.', 'warn');
+    }
+  };
+  reader.readAsText(file);
+};
+
+document.getElementById('saveProduct').onclick = () => {
+  const id = document.getElementById('f_id').value.trim();
+  const ten = document.getElementById('f_ten').value.trim();
+  if (!id || !ten) { showMsg('Vui lòng nhập mã sản phẩm và tên sản phẩm.', 'warn'); return; }
+  const editIndex = parseInt(document.getElementById('editIndex').value, 10);
+  const product = {
+    id, ten,
+    gia: document.getElementById('f_gia').value.trim(),
+    trang_thai: document.getElementById('f_trangthai').value.trim() || 'Chính hãng',
+    hinh_anh: document.getElementById('f_anh').value.trim(),
+    xuat_xu: document.getElementById('f_xuatxu').value.trim(),
+    thanh_phan: document.getElementById('f_thanhphan').value.trim(),
+    ngay_san_xuat: document.getElementById('f_nsx').value.trim(),
+    han_su_dung: document.getElementById('f_hsd').value.trim(),
+    mo_ta: document.getElementById('f_mota').value.trim()
+  };
+  const dupIndex = state.san_pham.findIndex((p, i) => p.id.toLowerCase() === id.toLowerCase() && i !== editIndex);
+  if (dupIndex !== -1) { showMsg('Mã sản phẩm này đã tồn tại. Hãy dùng mã khác.', 'warn'); return; }
+
+  if (editIndex >= 0) state.san_pham[editIndex] = product;
+  else state.san_pham.push(product);
+
+  persist(); render(); clearForm();
+  showMsg('Đã lưu sản phẩm.', 'ok');
+};
+
+document.getElementById('clearForm').onclick = clearForm;
+function clearForm(){
+  document.getElementById('editIndex').value = -1;
+  ['f_id','f_ten','f_gia','f_trangthai','f_anh','f_xuatxu','f_thanhphan','f_nsx','f_hsd','f_mota']
+    .forEach(id => document.getElementById(id).value = '');
+}
+
+function editProduct(i){
+  const p = state.san_pham[i];
+  document.getElementById('editIndex').value = i;
+  document.getElementById('f_id').value = p.id;
+  document.getElementById('f_ten').value = p.ten;
+  document.getElementById('f_gia').value = p.gia || '';
+  document.getElementById('f_trangthai').value = p.trang_thai || '';
+  document.getElementById('f_anh').value = p.hinh_anh || '';
+  document.getElementById('f_xuatxu').value = p.xuat_xu || '';
+  document.getElementById('f_thanhphan').value = p.thanh_phan || '';
+  document.getElementById('f_nsx').value = p.ngay_san_xuat || '';
+  document.getElementById('f_hsd').value = p.han_su_dung || '';
+  document.getElementById('f_mota').value = p.mo_ta || '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function deleteProduct(i){
+  if (!confirm('Xóa sản phẩm "' + state.san_pham[i].ten + '"?')) return;
+  state.san_pham.splice(i, 1);
+  persist(); render();
+}
+
+function productUrl(id){
+  const base = (localStorage.getItem(BASEURL_KEY) || '').trim();
+  const cleanBase = base ? (base.endsWith('/') ? base : base + '/') : './';
+  return cleanBase + (base ? 'index.html' : 'index.html') + '?id=' + encodeURIComponent(id);
+}
+
+function render(){
+  const tableWrap = document.getElementById('tableWrap');
+  const qrGrid = document.getElementById('qrGrid');
+  if (!state.san_pham.length){
+    tableWrap.innerHTML = '<div class="empty">Chưa có sản phẩm nào.</div>';
+    qrGrid.innerHTML = '';
+    return;
+  }
+  let rows = '<table><thead><tr><th>Mã</th><th>Tên sản phẩm</th><th>Giá</th><th></th></tr></thead><tbody>';
+  state.san_pham.forEach((p, i) => {
+    rows += `<tr>
+      <td class="id">${escapeHtml(p.id)}</td>
+      <td>${escapeHtml(p.ten)}</td>
+      <td>${escapeHtml(p.gia || '')}</td>
+      <td class="actions-col">
+        <button class="ghost" onclick="editProduct(${i})">Sửa</button>
+        <button class="danger" onclick="deleteProduct(${i})">Xóa</button>
+      </td>
+    </tr>`;
+  });
+  rows += '</tbody></table>';
+  tableWrap.innerHTML = rows;
+
+  qrGrid.innerHTML = '';
+  state.san_pham.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'qr-item';
+    const box = document.createElement('div');
+    box.className = 'qr-box';
+    item.appendChild(box);
+    const name = document.createElement('div');
+    name.className = 'name'; name.textContent = p.ten;
+    const code = document.createElement('div');
+    code.className = 'code'; code.textContent = p.id;
+    item.appendChild(name); item.appendChild(code);
+    qrGrid.appendChild(item);
+    new QRCode(box, { text: productUrl(p.id), width: 120, height: 120, colorDark: '#2B2A25', colorLight: '#ffffff' });
+    box.style.cursor = 'pointer';
+    box.title = 'Bấm để tải ảnh QR';
+    box.onclick = () => {
+      const img = box.querySelector('img') || box.querySelector('canvas');
+      const url = img.tagName === 'CANVAS' ? img.toDataURL('image/png') : img.src;
+      const a = document.createElement('a');
+      a.href = url; a.download = 'QR_' + p.id + '.png'; a.click();
+    };
+  });
+}
+
+function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tra cứu sản phẩm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F1E6;
+    --paper-2:#EFE9DA;
+    --ink:#2B2A25;
+    --ink-soft:#5B5A50;
+    --pine:#234D35;
+    --pine-2:#3C6B4D;
+    --clay:#B5652D;
+    --line:#D9D2BE;
+    --white:#FFFDF8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(43,42,37,0.06) 1px, transparent 0) 0 0/16px 16px,
+      var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    padding:32px 16px 64px;
+  }
+  .wrap{max-width:480px;margin:0 auto;}
+  .brand{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-bottom:28px;color:var(--ink-soft);font-size:13px;letter-spacing:.04em;
+    text-transform:uppercase;
+  }
+  .brand svg{width:16px;height:16px;flex-shrink:0;}
+
+  /* --- search state --- */
+  .search-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:32px 28px;
+    text-align:center;
+  }
+  .search-card h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:26px;
+    margin:0 0 8px;
+    color:var(--pine);
+  }
+  .search-card p{color:var(--ink-soft);font-size:14px;line-height:1.6;margin:0 0 22px;}
+  .search-row{display:flex;gap:8px;}
+  input#manualId{
+    flex:1;
+    border:1px solid var(--line);
+    background:var(--paper-2);
+    border-radius:3px;
+    padding:12px 14px;
+    font-family:'Space Mono',monospace;
+    font-size:14px;
+    color:var(--ink);
+    outline:none;
+  }
+  input#manualId:focus{border-color:var(--pine-2);}
+  button{
+    border:none;
+    background:var(--pine);
+    color:var(--white);
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    padding:12px 18px;
+    border-radius:3px;
+    cursor:pointer;
+  }
+  button:hover{background:var(--pine-2);}
+  .hint{margin-top:18px;font-size:12px;color:var(--ink-soft);}
+
+  /* --- tag card (product found) --- */
+  .tag{
+    position:relative;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .tag-top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 20px;
+    background:var(--pine);
+    color:var(--white);
+  }
+  .tag-top .status{
+    font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    display:flex;align-items:center;gap:6px;font-weight:600;
+  }
+  .tag-top .status .dot{width:6px;height:6px;border-radius:50%;background:#8FD9A8;}
+  .tag-top .id{font-family:'Space Mono',monospace;font-size:12px;opacity:.85;}
+
+  .tag-photo{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--paper-2);display:block;}
+
+  .tag-body{padding:22px 24px 8px;}
+  .tag-body h1{
+    font-family:'Fraunces',serif;font-weight:600;font-size:22px;line-height:1.3;
+    margin:0 0 6px;color:var(--ink);
+  }
+  .tag-price{
+    font-family:'Space Mono',monospace;font-size:18px;color:var(--clay);font-weight:700;
+    margin-bottom:16px;
+  }
+  .tag-desc{font-size:14px;line-height:1.7;color:var(--ink-soft);margin-bottom:18px;}
+
+  .perf{
+    display:flex;align-items:center;gap:2px;padding:0 4px;
+    color:var(--line);
+  }
+  .perf span{flex:1;border-top:2px dashed var(--line);}
+  .perf-hole{
+    width:16px;height:16px;border-radius:50%;background:var(--paper);
+    border:1px solid var(--line);flex-shrink:0;
+  }
+
+  .tag-facts{padding:18px 24px 22px;}
+  .fact-row{
+    display:flex;justify-content:space-between;gap:12px;
+    padding:9px 0;border-bottom:1px solid var(--paper-2);
+    font-size:13px;
+  }
+  .fact-row:last-child{border-bottom:none;}
+  .fact-label{color:var(--ink-soft);}
+  .fact-value{color:var(--ink);text-align:right;font-weight:500;}
+
+  .tag-footer{
+    padding:16px 24px 22px;text-align:center;
+  }
+  .tag-footer .call{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--pine);text-decoration:none;font-weight:600;font-size:14px;
+    border:1px solid var(--pine);border-radius:3px;padding:10px 18px;
+  }
+  .tag-footer .call svg{width:15px;height:15px;}
+
+  .back{
+    display:block;text-align:center;margin-top:18px;font-size:13px;
+    color:var(--ink-soft);text-decoration:none;
+  }
+
+  .error-card{
+    background:var(--white);border:1px solid var(--line);border-radius:4px;
+    padding:36px 28px;text-align:center;
+  }
+  .error-card .mark{font-family:'Fraunces',serif;font-size:40px;color:var(--clay);margin-bottom:10px;}
+  .error-card h1{font-family:'Fraunces',serif;font-size:20px;margin:0 0 8px;color:var(--ink);}
+  .error-card p{color:var(--ink-soft);font-size:14px;margin:0 0 20px;line-height:1.6;}
+
+  .loading{text-align:center;color:var(--ink-soft);font-size:14px;padding:60px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM19 19h2v2h-2z"/></svg>
+    <span id="shopName">Tra cứu sản phẩm</span>
+  </div>
+  <div id="app"><div class="loading">Đang tải…</div></div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const productId = params.get('id');
+const app = document.getElementById('app');
+
+fetch('./products.json?_=' + Date.now())
+  .then(r => r.json())
+  .then(data => {
+    if (data.cua_hang && data.cua_hang.ten) {
+      document.getElementById('shopName').textContent = data.cua_hang.ten;
+    }
+    if (!productId) {
+      renderSearch(data);
+    } else {
+      const sp = (data.san_pham || []).find(p => p.id.toLowerCase() === productId.toLowerCase());
+      if (sp) renderProduct(sp, data.cua_hang);
+      else renderNotFound();
+    }
+  })
+  .catch(() => {
+    app.innerHTML = '<div class="error-card"><div class="mark">!</div><h1>Không tải được dữ liệu</h1><p>Không tìm thấy tệp products.json. Hãy kiểm tra lại việc triển khai trang web.</p></div>';
+  });
+
+function renderSearch(data){
+  app.innerHTML = `
+    <div class="search-card">
+      <h1>Tra cứu sản phẩm</h1>
+      <p>Quét mã QR trên sản phẩm, hoặc nhập mã sản phẩm bên dưới để xem thông tin chi tiết.</p>
+      <div class="search-row">
+        <input id="manualId" placeholder="Ví dụ: SP001" autocomplete="off">
+        <button id="goBtn">Tra cứu</button>
+      </div>
+      <div class="hint">${(data.san_pham||[]).length} sản phẩm đang có trong hệ thống</div>
+    </div>`;
+  const go = () => {
+    const v = document.getElementById('manualId').value.trim();
+    if (v) window.location.search = '?id=' + encodeURIComponent(v);
+  };
+  document.getElementById('goBtn').onclick = go;
+  document.getElementById('manualId').addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+}
+
+function renderNotFound(){
+  app.innerHTML = `
+    <div class="error-card">
+      <div class="mark">?</div>
+      <h1>Không tìm thấy sản phẩm</h1>
+      <p>Mã sản phẩm "<strong>${escapeHtml(productId)}</strong>" không có trong hệ thống. Vui lòng kiểm tra lại mã QR hoặc liên hệ cửa hàng.</p>
+    </div>
+    <a class="back" href="./">← Quay lại tìm kiếm</a>`;
+}
+
+function renderProduct(sp, shop){
+  const phone = shop && shop.dien_thoai ? shop.dien_thoai : '';
+  app.innerHTML = `
+    <div class="tag">
+      <div class="tag-top">
+        <span class="status"><span class="dot"></span>${escapeHtml(sp.trang_thai || 'Chính hãng')}</span>
+        <span class="id">${escapeHtml(sp.id)}</span>
+      </div>
+      ${sp.hinh_anh ? `<img class="tag-photo" src="${escapeAttr(sp.hinh_anh)}" alt="${escapeAttr(sp.ten)}">` : ''}
+      <div class="tag-body">
+        <h1>${escapeHtml(sp.ten)}</h1>
+        ${sp.gia ? `<div class="tag-price">${escapeHtml(sp.gia)}</div>` : ''}
+        ${sp.mo_ta ? `<div class="tag-desc">${escapeHtml(sp.mo_ta)}</div>` : ''}
+      </div>
+      <div class="perf"><span></span><div class="perf-hole"></div><span></span></div>
+      <div class="tag-facts">
+        ${fact('Xuất xứ', sp.xuat_xu)}
+        ${fact('Thành phần', sp.thanh_phan)}
+        ${fact('Ngày sản xuất', sp.ngay_san_xuat)}
+        ${fact('Hạn sử dụng', sp.han_su_dung)}
+      </div>
+      ${phone ? `
+      <div class="tag-footer">
+        <a class="call" href="tel:${escapeAttr(phone.replace(/\s/g,''))}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Liên hệ cửa hàng: ${escapeHtml(phone)}
+        </a>
+      </div>` : ''}
+    </div>
+    <a class="back" href="./">← Tra cứu sản phẩm khác</a>`;
+}
+
+function fact(label, value){
+  if (!value) return '';
+  return `<div class="fact-row"><span class="fact-label">${escapeHtml(label)}</span><span class="fact-value">${escapeHtml(value)}</span></div>`;
+}
+function escapeHtml(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escapeAttr(s){ return escapeHtml(s); }
+</script>
+</body>
+</html>

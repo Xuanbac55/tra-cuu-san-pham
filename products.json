@@ -1,0 +1,46 @@
+{
+  "cua_hang": {
+    "ten": "Cửa hàng của bạn",
+    "logo": "",
+    "dien_thoai": "0900 000 000",
+    "website": ""
+  },
+  "san_pham": [
+    {
+      "id": "SP001",
+      "ten": "Mật ong rừng nguyên chất",
+      "hinh_anh": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600",
+      "gia": "180.000đ",
+      "xuat_xu": "Lâm Đồng, Việt Nam",
+      "han_su_dung": "24 tháng kể từ ngày sản xuất",
+      "ngay_san_xuat": "01/06/2026",
+      "mo_ta": "Mật ong hoa rừng thu hoạch tự nhiên, không pha tạp chất, đóng chai thủy tinh 500ml.",
+      "thanh_phan": "100% mật ong nguyên chất",
+      "trang_thai": "Chính hãng"
+    },
+    {
+      "id": "SP002",
+      "ten": "Trà atiso túi lọc",
+      "hinh_anh": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=600",
+      "gia": "65.000đ",
+      "xuat_xu": "Đà Lạt, Việt Nam",
+      "han_su_dung": "18 tháng kể từ ngày sản xuất",
+      "ngay_san_xuat": "15/05/2026",
+      "mo_ta": "Trà atiso sấy lạnh giữ trọn dưỡng chất, hộp 20 túi lọc, tiện lợi pha uống hằng ngày.",
+      "thanh_phan": "Bông atiso, lá atiso sấy khô",
+      "trang_thai": "Chính hãng"
+    },
+    {
+      "id": "SP003",
+      "ten": "Cà phê rang xay Robusta",
+      "hinh_anh": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600",
+      "gia": "120.000đ",
+      "xuat_xu": "Buôn Ma Thuột, Việt Nam",
+      "han_su_dung": "12 tháng kể từ ngày sản xuất",
+      "ngay_san_xuat": "20/06/2026",
+      "mo_ta": "Cà phê Robusta rang mộc, xay sẵn, vị đậm đà truyền thống, gói 250g.",
+      "thanh_phan": "100% cà phê Robusta",
+      "trang_thai": "Chính hãng"
+    }
+  ]
+}
