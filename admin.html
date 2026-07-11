@@ -113,6 +113,12 @@
     </div>
     <label>Mô tả</label>
     <textarea id="f_mota" placeholder="Mô tả ngắn về sản phẩm"></textarea>
+    <label>Tên cửa hàng bán sản phẩm này</label>
+    <input id="f_tencuahang" placeholder="VD: Cửa hàng nông sản Ba Miền">
+    <div class="row2">
+      <div><label>Số điện thoại liên hệ</label><input id="f_dienthoai" placeholder="09xxxxxxxx"></div>
+      <div><label>Link mạng xã hội</label><input id="f_mxh" placeholder="https://facebook.com/..."></div>
+    </div>
     <div class="actions">
       <button id="saveProduct">Lưu sản phẩm</button>
       <button class="ghost" id="clearForm">Xóa nội dung nhập</button>
@@ -208,7 +214,10 @@ document.getElementById('saveProduct').onclick = () => {
     thanh_phan: document.getElementById('f_thanhphan').value.trim(),
     ngay_san_xuat: document.getElementById('f_nsx').value.trim(),
     han_su_dung: document.getElementById('f_hsd').value.trim(),
-    mo_ta: document.getElementById('f_mota').value.trim()
+    mo_ta: document.getElementById('f_mota').value.trim(),
+    ten_cua_hang: document.getElementById('f_tencuahang').value.trim(),
+    dien_thoai: document.getElementById('f_dienthoai').value.trim(),
+    mang_xa_hoi: document.getElementById('f_mxh').value.trim()
   };
   const dupIndex = state.san_pham.findIndex((p, i) => p.id.toLowerCase() === id.toLowerCase() && i !== editIndex);
   if (dupIndex !== -1) { showMsg('Mã sản phẩm này đã tồn tại. Hãy dùng mã khác.', 'warn'); return; }
@@ -223,7 +232,7 @@ document.getElementById('saveProduct').onclick = () => {
 document.getElementById('clearForm').onclick = clearForm;
 function clearForm(){
   document.getElementById('editIndex').value = -1;
-  ['f_id','f_ten','f_gia','f_trangthai','f_anh','f_xuatxu','f_thanhphan','f_nsx','f_hsd','f_mota']
+  ['f_id','f_ten','f_gia','f_trangthai','f_anh','f_xuatxu','f_thanhphan','f_nsx','f_hsd','f_mota','f_tencuahang','f_dienthoai','f_mxh']
     .forEach(id => document.getElementById(id).value = '');
 }
 
@@ -240,6 +249,9 @@ function editProduct(i){
   document.getElementById('f_nsx').value = p.ngay_san_xuat || '';
   document.getElementById('f_hsd').value = p.han_su_dung || '';
   document.getElementById('f_mota').value = p.mo_ta || '';
+  document.getElementById('f_tencuahang').value = p.ten_cua_hang || '';
+  document.getElementById('f_dienthoai').value = p.dien_thoai || '';
+  document.getElementById('f_mxh').value = p.mang_xa_hoi || '';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function deleteProduct(i){
