@@ -1,0 +1,88 @@
+{
+  "cua_hang": {
+    "ten": "Cửa hàng của bạn",
+    "logo": "",
+    "dien_thoai": "0900 000 000",
+    "website": ""
+  },
+  "san_pham": [
+    {
+      "id": "SP001",
+      "ten": "Mật ong rừng nguyên chất",
+      "gia": "180.000đ",
+      "trang_thai": "Chính hãng",
+      "hinh_anh": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600",
+      "xuat_xu": "Lâm Đồng, Việt Nam",
+      "thanh_phan": "100% mật ong nguyên chất",
+      "ngay_san_xuat": "01/06/2026",
+      "han_su_dung": "24 tháng kể từ ngày sản xuất",
+      "mo_ta": "Mật ong hoa rừng thu hoạch tự nhiên, không pha tạp chất, đóng chai thủy tinh 500ml."
+    },
+    {
+      "id": "SP002",
+      "ten": "Trà atiso túi lọc",
+      "hinh_anh": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=600",
+      "gia": "65.000đ",
+      "xuat_xu": "Đà Lạt, Việt Nam",
+      "han_su_dung": "18 tháng kể từ ngày sản xuất",
+      "ngay_san_xuat": "15/05/2026",
+      "mo_ta": "Trà atiso sấy lạnh giữ trọn dưỡng chất, hộp 20 túi lọc, tiện lợi pha uống hằng ngày.",
+      "thanh_phan": "Bông atiso, lá atiso sấy khô",
+      "trang_thai": "Chính hãng"
+    },
+    {
+      "id": "SP003",
+      "ten": "Cà phê rang xay Robusta",
+      "hinh_anh": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600",
+      "gia": "120.000đ",
+      "xuat_xu": "Buôn Ma Thuột, Việt Nam",
+      "han_su_dung": "12 tháng kể từ ngày sản xuất",
+      "ngay_san_xuat": "20/06/2026",
+      "mo_ta": "Cà phê Robusta rang mộc, xay sẵn, vị đậm đà truyền thống, gói 250g.",
+      "thanh_phan": "100% cà phê Robusta",
+      "trang_thai": "Chính hãng"
+    },
+    {
+      "id": "sp004",
+      "ten": "chuối khô",
+      "gia": "150.000",
+      "trang_thai": "nhập khẩu",
+      "hinh_anh": "https://mia.vn/media/uploads/blog-du-lich/den-lang-nghe-ep-chuoi-kho-tran-van-thoi-thuong-thuc-dac-san-thom-ngon-7-1664163002.jpg",
+      "xuat_xu": "campuchia",
+      "thanh_phan": "chuối 100%",
+      "ngay_san_xuat": "12/3/2026",
+      "han_su_dung": "24 tháng",
+      "mo_ta": "chuối khô"
+    },
+    {
+      "id": "SP005",
+      "ten": "MĂNG NGÂM",
+      "gia": "",
+      "trang_thai": "CHÍNH HÃNG",
+      "hinh_anh": "https://photos.google.com/share/AF1QipM3qiExQa6G95zQBRwha-UkpL-bh5FLueG0VTNJNjcvw0SeT3KTWIdlTtYnyCBmoA?key=elh6YTJoTkJQUXhaTXN6c3lYT1NyOFV0X2trNkhn",
+      "xuat_xu": "Thôn Huyền Sơn, xã Nghĩa Phương, tỉnh Bắc Ninh",
+      "thanh_phan": "Măng tươi (chính), tỏi khô, muối hột, đường kính, ớt tươi",
+      "ngay_san_xuat": "xem trên bao bì",
+      "han_su_dung": "3 tháng kể từ NSX",
+      "mo_ta": "MÔ TẢ SẢN PHẨM: MĂNG TRE LỤC TRÚC NGÂM CHUA CAY\n•\tThương hiệu: Nông hộ Triệu Hoan (Bắc Giang).\n•\tThành phần: 100% măng tre Lục Trúc tươi chọn lọc, tỏi, ớt, muối, dấm và nước sạch tinh khiết.\n•\tĐặc điểm: Măng giữ được độ giòn ngọt tự nhiên, bản măng dày, nước ngâm chua thanh nhẹ, thơm nồng vị tỏi ớt tự nhiên, không bị váng.\n•\tSử dụng: Ăn trực tiếp kèm mì, bún, phở, các món lẩu hoặc dùng chế biến các món xào, nấu canh chua.\n•\tBảo quản: Nơi khô ráo, thoáng mát. Sau khi mở nắp nên bảo quản trong ngăn mát tủ lạnh để măng giữ được độ giòn lâu nhất.",
+      "ten_cua_hang": "Nông hộ sản xuất măng tre Lục Trúc Triệu Hoan",
+      "dien_thoai": "0326 673 128 ; 0385 759 858",
+      "mang_xa_hoi": "https://www.facebook.com/xuanbac55"
+    },
+    {
+      "id": "SP006",
+      "ten": "Măng Tre Lục Trúc",
+      "gia": "liên hệ",
+      "trang_thai": "Chính Hãng",
+      "hinh_anh": "https://photos.google.com/share/AF1QipMHUDeXjn52Tzms-NJHxzKwuBxYdCrmOYXqlHrXY0XqCxMr-mKbkXVXr_-_FSLhqQ?key=RjhGcURNNklRUUZtWVBhcFpfaFIzdTBZWlBPbjBB",
+      "xuat_xu": "Thôn Huyền Sơn, xã Nghĩa Phương, tỉnh Bắc Ninh",
+      "thanh_phan": "100% măng tre Lục Trúc",
+      "ngay_san_xuat": "ghi trên bao bì",
+      "han_su_dung": "7 ngày kể từ NSX",
+      "mo_ta": "[MĂNG TRE LỤC TRÚC TRIỆU HOAN - ĐẶC SẢN SẠCH TỪ THÔN HUYỀN SƠN]\n🎋 Anh chị đã thử dòng măng tươi được mệnh danh là \"vua của các loại măng\" chưa ạ? Nông hộ Triệu Hoan chúng em vừa thu hoạch lứa măng Lục Trúc mới nhất, củ nào củ nấy mập mạp, đặc ruột, trắng ngần và cực kỳ tươi ngon!\n✨ Cam kết 3 KHÔNG từ nhà vườn:\n•\tKHÔNG sử dụng thuốc bảo vệ thực vật.\n•\tKHÔNG chứa chất bảo quản hóa học.\n•\tKHÔNG sấy lưu huỳnh - Hoàn toàn tự nhiên 100%.\n🥗 Gợi ý món ngon: Măng Lục Trúc có vị ngọt thanh, giòn sần sật, rất hợp để làm các món om, luộc chấm muối ớt, hoặc xào lòng mề, thịt bò cực kỳ đưa cơm.\n📦 Bảo quản dễ dàng: Hàng giao đi được bọc màng thực phẩm kỹ càng, anh chị về chỉ cần để ngăn mát tủ lạnh (1 - 5°C) là giữ nguyên độ giòn ngọt trong vòng 7 ngày.",
+      "ten_cua_hang": "Nông hộ sản xuất măng tre Lục Trúc Triệu Hoan",
+      "dien_thoai": "0326 673 128 ; 0385 759 858",
+      "mang_xa_hoi": ""
+    }
+  ]
+}
